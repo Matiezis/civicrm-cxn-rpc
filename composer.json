@@ -11,9 +11,9 @@
         "phpseclib/phpseclib": "^3.0"
     },
     "autoload": {
-    "psr-4": {
-        "Civi\\Cxn\\Rpc\\": "vendor/civicrm/civicrm-cxn-rpc/src/"
-        }
+        "psr-4": {
+            "Civi\\Cxn\\Rpc\\": "src/"
+         }
     },
     "license": "MIT",
     "authors": [
