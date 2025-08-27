@@ -105,17 +105,17 @@ class DefaultCertificateValidator implements CertificateValidatorInterface {
   protected static function validate($certPem, $caCertPem, $crlPem = NULL, $crlDistCertPem = NULL) {
     $caCertObj = X509Util::loadCACert($caCertPem);
 
-    $certObj = new \phpseclib\File\X509();
+    $certObj = new \phpseclib3\File\X509();
     $certObj->loadCA($caCertPem);
 
     if ($crlPem !== NULL) {
-      $crlObj = new \phpseclib\File\X509();
+      $crlObj = new \phpseclib3\File\X509();
       if ($crlDistCertPem) {
         $crlDistCertObj = X509Util::loadCrlDistCert($crlDistCertPem, NULL, $caCertPem);
-        if ($crlDistCertObj->getSubjectDN(\phpseclib\File\X509::DN_STRING) !== $caCertObj->getSubjectDN(\phpseclib\File\X509::DN_STRING)) {
+        if ($crlDistCertObj->getSubjectDN(\phpseclib3\File\X509::DN_STRING) !== $caCertObj->getSubjectDN(\phpseclib3\File\X509::DN_STRING)) {
           throw new InvalidCertException(sprintf("CRL distributor (%s) does not act on behalf of this CA (%s)",
-            $crlDistCertObj->getSubjectDN(\phpseclib\File\X509::DN_STRING),
-            $caCertObj->getSubjectDN(\phpseclib\File\X509::DN_STRING)
+            $crlDistCertObj->getSubjectDN(\phpseclib3\File\X509::DN_STRING),
+            $caCertObj->getSubjectDN(\phpseclib3\File\X509::DN_STRING)
             ));
         }
         try {

@@ -23,7 +23,7 @@ class CATest extends \PHPUnit\Framework\TestCase {
 
     // create CRL
     $caCertObj = X509Util::loadCert($caCertPem, $caKeyPairPems);
-    $crlObj = new \phpseclib\File\X509();
+    $crlObj = new \phpseclib3\File\X509();
     $crlObj->setSerialNumber(1, 10);
     $crlObj->setEndDate('+2 days');
     $crlPem = $crlObj->saveCRL($crlObj->signCRL($caCertObj, $crlObj));
@@ -53,7 +53,7 @@ class CATest extends \PHPUnit\Framework\TestCase {
     $crlDistCertObj = X509Util::loadCert($crlDistCertPem, $crlDistKeyPairPems, $caCertPem);
     $this->assertNotEmpty($crlDistCertObj);
 
-    $crlObj = new \phpseclib\File\X509();
+    $crlObj = new \phpseclib3\File\X509();
     $crlObj->setSerialNumber(1, 10);
     $crlObj->setEndDate('+2 days');
     $crlPem = $crlObj->saveCRL($crlObj->signCRL($crlDistCertObj, $crlObj));
@@ -110,7 +110,7 @@ class CATest extends \PHPUnit\Framework\TestCase {
     $crlDistCertObj = X509Util::loadCert($crlDistCertPem, $crlDistKeyPairPems, $caCertPem);
     $this->assertNotEmpty($crlDistCertObj);
 
-    $crlObj = new \phpseclib\File\X509();
+    $crlObj = new \phpseclib3\File\X509();
     $crlObj->setSerialNumber(1, 10);
     $crlObj->setEndDate('+2 days');
     $crlPem = $crlObj->saveCRL($crlObj->signCRL($crlDistCertObj, $crlObj));
@@ -155,7 +155,7 @@ class CATest extends \PHPUnit\Framework\TestCase {
     $crlDistCertObj = X509Util::loadCert($crlDistCertPem, $crlDistKeyPairPems, $caCertPem);
     $this->assertNotEmpty($crlDistCertObj);
 
-    $crlObj = new \phpseclib\File\X509();
+    $crlObj = new \phpseclib3\File\X509();
     $crlObj->setSerialNumber(1, 10);
     $crlObj->setEndDate('+2 days');
     $crlPem = $crlObj->saveCRL($crlObj->signCRL($crlDistCertObj, $crlObj));

@@ -24,26 +24,26 @@ class CA {
    *   Certificate data.
    */
   public static function create($keyPair, $dn) {
-    $privKey = new \phpseclib\Crypt\RSA();
+    $privKey = new \phpseclib3\Crypt\RSA();
     $privKey->loadKey($keyPair['privatekey']);
 
-    $pubKey = new \phpseclib\Crypt\RSA();
+    $pubKey = new \phpseclib3\Crypt\RSA();
     $pubKey->loadKey($keyPair['publickey']);
     $pubKey->setPublicKey();
 
-    $subject = new \phpseclib\File\X509();
+    $subject = new \phpseclib3\File\X509();
     if (!$subject->setDN($dn)) {
       throw new \InvalidArgumentException("Malformed DN: $dn");
     }
     $subject->setPublicKey($pubKey);
 
-    $issuer = new \phpseclib\File\X509();
+    $issuer = new \phpseclib3\File\X509();
     $issuer->setPrivateKey($privKey);
     if (!$issuer->setDN($dn)) {
       throw new \InvalidArgumentException("Malformed DN: $dn");
     }
 
-    $x509 = new \phpseclib\File\X509();
+    $x509 = new \phpseclib3\File\X509();
     $x509->makeCA();
     $x509->setEndDate(date('c', strtotime(Constants::CA_DURATION, Time::getTime())));
 
@@ -89,14 +89,14 @@ class CA {
    *   CSR data.
    */
   public static function createAppCSR($keyPair, $dn) {
-    $privKey = new \phpseclib\Crypt\RSA();
+    $privKey = new \phpseclib3\Crypt\RSA();
     $privKey->loadKey($keyPair['privatekey']);
 
-    $pubKey = new \phpseclib\Crypt\RSA();
+    $pubKey = new \phpseclib3\Crypt\RSA();
     $pubKey->loadKey($keyPair['publickey']);
     $pubKey->setPublicKey();
 
-    $x509 = new \phpseclib\File\X509();
+    $x509 = new \phpseclib3\File\X509();
     $x509->setPrivateKey($privKey);
     if (!$x509->setDN($dn)) {
       throw new \InvalidArgumentException("Malformed DN: $dn");
@@ -123,14 +123,14 @@ class CA {
    *   CSR data.
    */
   public static function createDirSvcCSR($keyPair, $dn) {
-    $privKey = new \phpseclib\Crypt\RSA();
+    $privKey = new \phpseclib3\Crypt\RSA();
     $privKey->loadKey($keyPair['privatekey']);
 
-    $pubKey = new \phpseclib\Crypt\RSA();
+    $pubKey = new \phpseclib3\Crypt\RSA();
     $pubKey->loadKey($keyPair['publickey']);
     $pubKey->setPublicKey();
 
-    $x509 = new \phpseclib\File\X509();
+    $x509 = new \phpseclib3\File\X509();
     $x509->setPrivateKey($privKey);
     if (!$x509->setDN($dn)) {
       throw new \InvalidArgumentException("Malformed DN: $dn");
@@ -152,14 +152,14 @@ class CA {
    *   PEM-encoded CSR.
    */
   public static function createCrlDistCSR($keyPair, $dn) {
-    $privKey = new \phpseclib\Crypt\RSA();
+    $privKey = new \phpseclib3\Crypt\RSA();
     $privKey->loadKey($keyPair['privatekey']);
 
-    $pubKey = new \phpseclib\Crypt\RSA();
+    $pubKey = new \phpseclib3\Crypt\RSA();
     $pubKey->loadKey($keyPair['publickey']);
     $pubKey->setPublicKey();
 
-    $csr = new \phpseclib\File\X509();
+    $csr = new \phpseclib3\File\X509();
     $csr->setPrivateKey($privKey);
     $csr->setPublicKey($pubKey);
     if (!$csr->setDN($dn)) {
@@ -186,23 +186,23 @@ class CA {
    *   PEM-encoded cert.
    */
   public static function signCSR($caKeyPair, $caCert, $csr, $serialNumber = 1) {
-    $privKey = new \phpseclib\Crypt\RSA();
+    $privKey = new \phpseclib3\Crypt\RSA();
     $privKey->loadKey($caKeyPair['privatekey']);
 
-    $subject = new \phpseclib\File\X509();
+    $subject = new \phpseclib3\File\X509();
     $subject->loadCSR($csr);
 
-    $issuer = new \phpseclib\File\X509();
+    $issuer = new \phpseclib3\File\X509();
     $issuer->loadX509($caCert);
     $issuer->setPrivateKey($privKey);
 
-    $x509 = new \phpseclib\File\X509();
+    $x509 = new \phpseclib3\File\X509();
     $x509->setSerialNumber($serialNumber, 10);
     $x509->setEndDate(date('c', strtotime(Constants::APP_DURATION, Time::getTime())));
 
     $result = $x509->sign($issuer, $subject, Constants::CERT_SIGNATURE_ALGORITHM);
     if ($result === FALSE) {
-      $subjectDn = $subject->getDN(\phpseclib\File\X509::DN_ASN1);
+      $subjectDn = $subject->getDN(\phpseclib3\File\X509::DN_ASN1);
       throw new \RuntimeException("Failed to sign CSR ($subjectDn)");
     }
     return $x509->saveX509($result);

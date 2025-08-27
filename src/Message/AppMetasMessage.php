@@ -77,7 +77,7 @@ class AppMetasMessage extends Message {
     if ($certValidator !== NULL) {
       $certValidator->validateCert($wireCert);
 
-      $wireCertX509 = new \phpseclib\File\X509();
+      $wireCertX509 = new \phpseclib3\File\X509();
       $wireCertX509->loadX509($wireCert);
 
       $cn = $wireCertX509->getDNProp('CN');
@@ -108,10 +108,10 @@ class AppMetasMessage extends Message {
    * @param string $key
    * @param string $type
    *   'public' or 'private'
-   * @return \phpseclib\Crypt\RSA
+   * @return \phpseclib3\Crypt\RSA
    */
   public static function getRsa($key, $type) {
-    $rsa = new \phpseclib\Crypt\RSA();
+    $rsa = new \phpseclib3\Crypt\RSA();
     $rsa->loadKey($key);
     if ($type == 'public') {
       $rsa->setPublicKey();
@@ -125,8 +125,8 @@ class AppMetasMessage extends Message {
   /**
    * Quasi-private - marked public to work-around PHP 5.3 compat.
    *
-   * @param \phpseclib\File\X509 $x509
-   * @return \phpseclib\Crypt\RSA
+   * @param \phpseclib3\File\X509 $x509
+   * @return \phpseclib3\Crypt\RSA
    */
   public static function getRsaFromCert($x509) {
     $rsa = $x509->getPublicKey();
